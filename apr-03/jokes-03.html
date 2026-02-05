@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>April - April Fools' Day</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: radial-gradient(circle at top, #222, #000);
+    font-family: 'Lobster', cursive;
+  }
+
+  .ui {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+  }
+
+  .title {
+    font-size: 48px;
+    color: #ffeb3b;
+    text-shadow: 0 0 20px #ff9800;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #ffd54f;
+    opacity: 0.9;
+    z-index: 10;
+  }
+
+  .logo img {
+    width: 140px;
+    margin-top: 6px;
+    filter: drop-shadow(0 0 10px orange);
+  }
+
+  canvas {
+    display: block;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- UI -->
+<div class="ui">
+  <div class="title">April - April Fools' Day</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Powered By Animations Mexican&reg;
+  <div class="logo">
+    <img src="https://timercodgob.edgeone.dev/gob.png" alt="logo">
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+<script>
+  /* 🎨 CANVAS 2D (EMOJI 😂) */
+  const emojiCanvas = document.createElement('canvas');
+  emojiCanvas.width = 256;
+  emojiCanvas.height = 256;
+  const ctx = emojiCanvas.getContext('2d');
+
+  ctx.clearRect(0, 0, 256, 256);
+  ctx.font = '180px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('😂', 128, 140);
+
+  const texture = new THREE.CanvasTexture(emojiCanvas);
+
+  /* 🌌 THREE.JS */
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.z = 4;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  document.body.appendChild(renderer.domElement);
+
+  // 💡 LUCES
+  scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+  const light = new THREE.PointLight(0xffc107, 1);
+  light.position.set(4, 4, 6);
+  scene.add(light);
+
+  // 🧱 PLANO 3D CON TEXTURA 2D
+  const geometry = new THREE.PlaneGeometry(1.8, 1.8);
+  const material = new THREE.MeshStandardMaterial({
+    map: texture,
+    transparent: true,
+    roughness: 0.3,
+    metalness: 0.2
+  });
+
+  const emojiMesh = new THREE.Mesh(geometry, material);
+  scene.add(emojiMesh);
+
+  // 🤣 ANIMACIÓN
+  function animate() {
+    requestAnimationFrame(animate);
+    emojiMesh.rotation.y += 0.01;
+    emojiMesh.rotation.x = Math.sin(Date.now() * 0.002) * 0.15;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // 📱 RESPONSIVE
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+
+</body>
+</html>
