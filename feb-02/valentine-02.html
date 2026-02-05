@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>February - Valentine's Day</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: radial-gradient(circle at top, #2b0015, #000);
+    font-family: 'Lobster', cursive;
+  }
+
+  .ui {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+  }
+
+  .title {
+    font-size: 48px;
+    color: #ff7eb9;
+    text-shadow: 0 0 25px #ff4fa3;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #ff9acb;
+    opacity: 0.9;
+    z-index: 10;
+  }
+
+  .logo img {
+    width: 140px;
+    margin-top: 6px;
+    filter: drop-shadow(0 0 12px #ff4fa3);
+  }
+
+  canvas {
+    display: block;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- UI TOP -->
+<div class="ui">
+  <div class="title">February - Valentine's Day</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Powered By Animations Mexican&reg;
+  <div class="logo">
+    <img src="https://timercodgob.edgeone.dev/gob.png" alt="TimerCode Logo">
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+<script>
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.z = 6;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  document.body.appendChild(renderer.domElement);
+
+  // 💡 LUCES
+  scene.add(new THREE.AmbientLight(0xff69b4, 0.6));
+
+  const light = new THREE.PointLight(0xff9acb, 1.2);
+  light.position.set(4, 5, 6);
+  scene.add(light);
+
+  // 💗 MATERIAL ROSA
+  const heartMaterial = new THREE.MeshStandardMaterial({
+    color: 0xff4fa3,
+    metalness: 0.5,
+    roughness: 0.3,
+    emissive: 0x330015
+  });
+
+  // 💖 CORAZÓN (ORIENTADO BIEN)
+  const heartShape = new THREE.Shape();
+  heartShape.moveTo(0, 2);
+  heartShape.bezierCurveTo(0, 2, -2, 0, -4, 2);
+  heartShape.bezierCurveTo(-6, 4, -3, 7, 0, 6);
+  heartShape.bezierCurveTo(3, 7, 6, 4, 4, 2);
+  heartShape.bezierCurveTo(2, 0, 0, 2, 0, 2);
+
+  const geometry = new THREE.ExtrudeGeometry(heartShape, {
+    depth: 1,
+    bevelEnabled: true,
+    bevelThickness: 0.3,
+    bevelSize: 0.3,
+    bevelSegments: 12
+  });
+
+  geometry.center();
+
+  const heart = new THREE.Mesh(geometry, heartMaterial);
+
+  // 📏 ~80px
+  heart.scale.set(0.22, 0.22, 0.22);
+  heart.rotation.x = Math.PI;
+
+  scene.add(heart);
+
+  // 💞 ANIMACIÓN
+  function animate() {
+    requestAnimationFrame(animate);
+    heart.rotation.y += 0.01;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // 📱 RESPONSIVE
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+
+</body>
+</html>
