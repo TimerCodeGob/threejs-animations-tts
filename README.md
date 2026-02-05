@@ -12,7 +12,7 @@
 **June - None event**<br>
 **July - None event**<br>
 **August  - Vacations**<br>
-[Septiembre - Independence of Mexico ]()<br>
+[September - Independence of Mexico ]()<br>
 [October - Halloween]()<br>
 [November - Day of the Dead]()<br>
 [December - Christmas]()
